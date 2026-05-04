@@ -3,7 +3,7 @@
 void printMenu(void)
 {
     printf("********************\n");
-    printf("**     OPTIONS    **\n");
+    printf("*      OPTIONS     *\n");
     printf("********************\n");
     printf("1. Add task.\n");
     printf("2. Delete task.\n");
