@@ -15,8 +15,7 @@ void printMenu(void)
 int selectTask(int a)
 {
     printf("********************\n");
-    printf("*  Select a task:  *\n");
-    printf("********************\n");
+    printf("Select a task:  ");
     scanf(" %d", &a);
     return a;
 }

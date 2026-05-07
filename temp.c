@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     
     do 
     {
+        clearScreen();
         printMenu();
         int task = selectTask(task);
       

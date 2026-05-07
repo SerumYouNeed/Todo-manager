@@ -1,5 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+
+// to jest bez sensu
+void clearScreen()
+{
+  const char *CLEAR_SCREEN_ANSI = "\033[2J";
+  write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 5);
+}
 
 void addTask(char *s, int taskCounter)
 {
@@ -40,6 +48,7 @@ int lineCounter(char *s)
 
 void printTasks(char *s)
 {
+    clearScreen();
     FILE *fp;
     fp = fopen(s, "r");
     if (fp == NULL)
@@ -48,10 +57,14 @@ void printTasks(char *s)
         return;
     }
     char buffer[1024];
+    printf("********************\n");
+    printf("%s\n", s);
+    printf("********************\n");
     while (fgets(buffer, sizeof buffer, fp) != NULL) 
     {
         printf("%s", buffer);
     }
+    printf("\n\n");
     fclose(fp);
 }
 
