@@ -2,11 +2,12 @@
 #include <string.h>
 #include <unistd.h>
 
-// to jest bez sensu
+// \033 or \x1b as escape ISO standard
+// [H - home, [J - clear
 void clearScreen()
 {
-  const char *CLEAR_SCREEN_ANSI = "\033[2J";
-  write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 5);
+   const char *CLEAR_SCREEN_ANSI = "\x1b[H\x1b[J";
+   write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 7);
 }
 
 void addTask(char *s, int taskCounter)
@@ -92,6 +93,7 @@ void deleteTask(char *s)
     int currentTask = 1;
     while (fgets(buffer, sizeof buffer, fp) != NULL)
     {
+        buffer = 
         if (currentTask != taskNum)
         {
             fprintf(tempFile, "%s", buffer);

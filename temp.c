@@ -17,23 +17,30 @@ int main(int argc, char *argv[])
 
     int exit = 0;
     
+    clearScreen();
     do 
     {
-        clearScreen();
-        printMenu();
-        int task = selectTask(task);
-      
-        switch (task)
-        {    
-                case 1: addTask(listName, lineCounter(listName));
+            printMenu();
+            int task = selectTask(task);
+            clearScreen();
+            
+            switch (task)
+            {    
+                case 1: 
+                        addTask(listName, lineCounter(listName));
+                        clearScreen();
                         break;
-                case 2: deleteTask(listName);
+                case 2: 
+                        deleteTask(listName);
+                        clearScreen();
                         break;
                 case 3: // markComplete(listName);
                         break;
-                case 4: printTasks(listName);
+                case 4:         
+                        printTasks(listName);
                         break;
-                case 5: exit = 1;
+                case 5: 
+                        exit = 1;
                         break;
                 default: printf("Invalid option.\n");
         }

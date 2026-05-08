@@ -3,14 +3,10 @@
 
 int main(void)
 {
-    for (int i = 10; i >= 0; i--) {
-        printf("\rT minus %d second%s... \b", i, i != 1? "s": "");
-
-        fflush(stdout);  // Force output to update
-
-        // Sleep for 1 second
-        thrd_sleep(&(struct timespec){.tv_sec=1}, NULL);
+    char a[1024] = "1. ggggggggg";
+    if (a[0] == 1)
+    {
+        a[0] = '4';
     }
-
-    printf("\rLiftoff!             \n");
+    printf("%s", a);
 }
