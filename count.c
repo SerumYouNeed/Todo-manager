@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <threads.h>
 
 int main(void)
 {
