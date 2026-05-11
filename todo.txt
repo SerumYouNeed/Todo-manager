@@ -1,4 +1,3 @@
-3. new task
-4. do it
-5. another task
-6. neeeeq
+1. second
+*********************
+[DONE] 3. ksiegowa

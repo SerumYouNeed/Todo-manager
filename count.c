@@ -1,11 +1,22 @@
 #include <stdio.h>
 
 int main(void)
-{
-    char a[1024] = "1. ggggggfnfn";
-    if (a[0] == 1)
+{ 
+
+    int a = 15;
+    char s[5];
+    snprintf(s, 5, "%d", a);
+
+
+
+    char str[1024] = "34. ggggggfnfn";
+    char temp[1024];
+
+    for (int i = 0; s[i] != '\0'; i++)
     {
-        a[0] = '4';
+        str[i] = s[i];
     }
-    printf("%s", a);
+
+
+    printf("%s", str);
 }

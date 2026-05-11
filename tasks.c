@@ -93,13 +93,74 @@ void deleteTask(char *s)
     int currentTask = 1;
     while (fgets(buffer, sizeof buffer, fp) != NULL)
     {
-        buffer = 
         if (currentTask != taskNum)
         {
-            fprintf(tempFile, "%s", buffer);
+            if (currentTask > taskNum)
+            {
+                // Update the task number for tasks after the deleted one
+                char *dotPos = strchr(buffer, '.');
+                if (dotPos != NULL)
+                {
+                    int newTaskNum = currentTask - 1;
+                    char newBuffer[1024];
+                    snprintf(newBuffer, sizeof newBuffer, "%d.%s", newTaskNum, dotPos + 1);
+                    fprintf(tempFile, "%s", newBuffer);
+                }
+                else
+                {
+                    fprintf(tempFile, "%s", buffer); // If no dot is found, write the line as is
+                }
+            }
+            else
+            {
+                fprintf(tempFile, "%s", buffer);
+            }
         }
         currentTask++;
     }
+    fclose(fp);
+    fclose(tempFile);
+    remove(s);
+    rename("temp.txt", s);
+}
+
+void markTaskDone(char *s)
+{
+    FILE *fp;
+    fp = fopen(s, "r");
+    if (fp == NULL)
+    {
+        printf("Error opening file.\n");
+    }
+    printf("Enter the number of the task to mark as done: \n");
+    int taskNum;
+    scanf(" %d", &taskNum);
+
+    FILE *tempFile;
+    tempFile = fopen("temp.txt", "w");
+    if (tempFile == NULL)
+    {
+        printf("Error opening temporary file.\n");
+        fclose(fp);
+        return; 
+    }
+    char buffer[1024];
+    int currentTask = 1;
+    char doneLine[1024];
+    while (fgets(buffer, sizeof buffer, fp) != NULL)
+    {
+        if (currentTask == taskNum)
+        {
+            // Mark the task as done by adding [DONE] at the beginning of the line
+            snprintf(doneLine, sizeof doneLine, "[DONE] %s", buffer);
+            continue;
+        }
+    
+        fprintf(tempFile, "%s", buffer);
+        currentTask++;
+    }
+    fprintf(tempFile, "%s", "*********************\n");
+    fprintf(tempFile, "%s", doneLine);
     fclose(fp);
     fclose(tempFile);
     remove(s);

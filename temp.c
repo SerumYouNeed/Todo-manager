@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
                         deleteTask(listName);
                         clearScreen();
                         break;
-                case 3: // markComplete(listName);
+                case 3: markTaskDone(listName);
                         break;
                 case 4:         
                         printTasks(listName);
