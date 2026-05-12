@@ -37,7 +37,7 @@ int lineCounter(char *s)
     fp = fopen(s, "r");
     if (fp == NULL)
     {
-        return 1; // If the file doesn't exist, we start with 1 task
+        return 1; // If the file doesn't exist, start with 1 task
     }
     while (fgets(buffer, sizeof buffer, fp) != NULL) 
     {
@@ -144,25 +144,59 @@ void markTaskDone(char *s)
         fclose(fp);
         return; 
     }
+    
+    FILE *tempFileDone;
+    tempFileDone = fopen("tempDone.txt", "w+");
+    if (tempFileDone == NULL)
+    {
+        printf("Error opening temporary file.\n");
+        fclose(fp);
+        return; 
+    }
+
     char buffer[1024];
     int currentTask = 1;
-    char doneLine[1024];
+
     while (fgets(buffer, sizeof buffer, fp) != NULL)
     {
-        if (currentTask == taskNum)
+        if (currentTask != taskNum)
         {
-            // Mark the task as done by adding [DONE] at the beginning of the line
-            snprintf(doneLine, sizeof doneLine, "[DONE] %s", buffer);
-            continue;
+            if (currentTask > taskNum)
+            {
+                // Update the task number for tasks after the deleted one
+                char *dotPos = strchr(buffer, '.');
+                if (dotPos != NULL)
+                {
+                    int newTaskNum = currentTask - 1;
+                    char newBuffer[1024];
+                    snprintf(newBuffer, sizeof newBuffer, "%d.%s", newTaskNum, dotPos + 1);
+                    fprintf(tempFile, "%s", newBuffer);
+                }
+            }
+            else
+            {
+                fprintf(tempFile, "%s", buffer);
+            }
         }
-    
-        fprintf(tempFile, "%s", buffer);
+        else
+        {
+            char doneBuffer[1024];
+            snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", buffer);
+            fprintf(tempFileDone, "%s", doneBuffer);
+        }
         currentTask++;
     }
-    fprintf(tempFile, "%s", "*********************\n");
-    fprintf(tempFile, "%s", doneLine);
+
+    rewind(tempFileDone); // Move the file pointer back to the beginning of tempFileDone
+    while(fgets(buffer, sizeof buffer, tempFileDone) != NULL)
+    {
+        fprintf(tempFile, "%s", buffer);
+    }
+
     fclose(fp);
     fclose(tempFile);
+    fclose(tempFileDone);
     remove(s);
+    remove("tempDone.txt");
     rename("temp.txt", s);
 }
