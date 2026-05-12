@@ -156,15 +156,21 @@ void markTaskDone(char *s)
 
     char buffer[1024];
     int currentTask = 1;
-
     while (fgets(buffer, sizeof buffer, fp) != NULL)
     {
+        if (buffer[4] == ':')
+        {
+            // This line is already marked as done, write it to tempFileDone
+            fprintf(tempFileDone, "%s", buffer);  
+            continue; // Skip the rest of the loop and move to the next line  
+        } 
+
         if (currentTask != taskNum)
         {
             if (currentTask > taskNum)
             {
                 // Update the task number for tasks after the deleted one
-                char *dotPos = strchr(buffer, '.');
+                char* dotPos = strchr(buffer, '.');
                 if (dotPos != NULL)
                 {
                     int newTaskNum = currentTask - 1;
@@ -180,8 +186,9 @@ void markTaskDone(char *s)
         }
         else
         {
+
             char doneBuffer[1024];
-            snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", buffer);
+            snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", buffer + 3);
             fprintf(tempFileDone, "%s", doneBuffer);
         }
         currentTask++;
