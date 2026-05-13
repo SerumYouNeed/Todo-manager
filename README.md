@@ -13,6 +13,12 @@ The application stores tasks in local text files and supports task creation, lis
 
 ---
 
+# Motivation
+
+The goal of this project was to strengthen core C programming skills and better understand memory management, file handling, and CLI application architecture at a lower level than modern high-level frameworks typically expose.
+
+---
+
 # Features
 
 - Create, edit and delete new lists
@@ -49,11 +55,11 @@ The application stores tasks in local text files and supports task creation, lis
 
 # Future Improvements
 
-Command-line arguments (todo add, todo done, todo list)
-Colored terminal output
-Task priorities
-Due dates
-Modular architecture using .h and .c files
-Makefile support
-Linux package installation
-ncurses interface
+- Command-line arguments (todo add, todo done, todo list)
+- Colored terminal output
+- Task priorities
+- Due dates
+- Modular architecture using .h and .c files
+- Makefile support
+- Linux package installation
+- ncurses interface
