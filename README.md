@@ -43,3 +43,17 @@ The application stores tasks in local text files and supports task creation, lis
 ├── tasks.txt
 ├── done.txt
 └── README.md
+```
+
+---
+
+# Future Improvements
+
+Command-line arguments (todo add, todo done, todo list)
+Colored terminal output
+Task priorities
+Due dates
+Modular architecture using .h and .c files
+Makefile support
+Linux package installation
+ncurses interface
