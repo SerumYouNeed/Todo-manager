@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 
 // \033 or \x1b as escape ISO standard
 // [H - home, [J - clear
@@ -71,139 +72,97 @@ void printTasks(char *s)
 
 void deleteTask(char *s)
 {
-    FILE *fp;
-    fp = fopen(s, "r");
-    if (fp == NULL)
-    {
-        printf("Error opening file.\n");
-    }
     printf("Enter the number of the task to delete: \n");
     int taskNum;
     scanf(" %d", &taskNum);
 
-    FILE *tempFile;
-    tempFile = fopen("temp.txt", "w");
-    if (tempFile == NULL)
-    {
-        printf("Error opening temporary file.\n");
-        fclose(fp);
-        return; 
-    }
-    char buffer[1024];
-    int currentTask = 1;
-    while (fgets(buffer, sizeof buffer, fp) != NULL)
-    {
-        if (currentTask != taskNum)
-        {
-            if (currentTask > taskNum)
-            {
-                // Update the task number for tasks after the deleted one
-                char *dotPos = strchr(buffer, '.');
-                if (dotPos != NULL)
-                {
-                    int newTaskNum = currentTask - 1;
-                    char newBuffer[1024];
-                    snprintf(newBuffer, sizeof newBuffer, "%d.%s", newTaskNum, dotPos + 1);
-                    fprintf(tempFile, "%s", newBuffer);
-                }
-                else
-                {
-                    fprintf(tempFile, "%s", buffer); // If no dot is found, write the line as is
-                }
-            }
-            else
-            {
-                fprintf(tempFile, "%s", buffer);
-            }
-        }
-        currentTask++;
-    }
-    fclose(fp);
-    fclose(tempFile);
-    remove(s);
-    rename("temp.txt", s);
+    updateTasksNumbers(s, taskNum);
 }
 
 void markTaskDone(char *s)
 {
     FILE *fp;
-    fp = fopen(s, "r");
+    fp = fopen(s, "a");
     if (fp == NULL)
     {
         printf("Error opening file.\n");
+        fclose(fp);
+        return;
     }
     printf("Enter the number of the task to mark as done: \n");
     int taskNum;
     scanf(" %d", &taskNum);
 
+    char doneBuffer[1024] = updateTasksNumbers(s, taskNum);
+    snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", doneBuffer + 3);
+    fprintf(fp, "%s", doneBuffer);
+
+    
+    fclose(fp);
+}
+
+char* updateTasksNumbers(char* s, int taskNum)
+
+{
     FILE *tempFile;
     tempFile = fopen("temp.txt", "w");
     if (tempFile == NULL)
     {
         printf("Error opening temporary file.\n");
-        fclose(fp);
-        return; 
-    }
-    
-    FILE *tempFileDone;
-    tempFileDone = fopen("tempDone.txt", "w+");
-    if (tempFileDone == NULL)
-    {
-        printf("Error opening temporary file.\n");
-        fclose(fp);
+        fclose(tempFile);
         return; 
     }
 
+    FILE *fp;
+    fp = fopen(s, "r");
+    if (fp == NULL)
+    {
+        printf("Error opening file.\n");
+        fclose(tempFile);
+        return;
+    }
+    
     char buffer[1024];
+    char markedTask[1024];
     int currentTask = 1;
     while (fgets(buffer, sizeof buffer, fp) != NULL)
     {
-        if (buffer[4] == ':')
+        if (buffer[0] == 'D' && buffer[1] == 'O' && buffer[2] == 'N' && buffer[3] == 'E')
         {
-            // This line is already marked as done, write it to tempFileDone
-            fprintf(tempFileDone, "%s", buffer);  
+            // This line is marked as done, write it to tempFile without changing the task number
+            fprintf(tempFile, "%s", buffer);  
             continue; // Skip the rest of the loop and move to the next line  
-        } 
-
-        if (currentTask != taskNum)
+        }
+        if (currentTask == taskNum)
         {
-            if (currentTask > taskNum)
+            // Skip the task that is being deleted
+            currentTask++;
+            snprintf(markedTask, sizeof markedTask, "%s", buffer);
+            continue; // Skip the rest of the loop and move to the next line
+        }
+        if (currentTask > taskNum)
+        {
+            // Update the task number for tasks after the deleted one
+            char *dotPos = strchr(buffer, '.');
+            if (dotPos != NULL)
             {
-                // Update the task number for tasks after the deleted one
-                char* dotPos = strchr(buffer, '.');
-                if (dotPos != NULL)
-                {
-                    int newTaskNum = currentTask - 1;
-                    char newBuffer[1024];
-                    snprintf(newBuffer, sizeof newBuffer, "%d.%s", newTaskNum, dotPos + 1);
-                    fprintf(tempFile, "%s", newBuffer);
-                }
-            }
-            else
-            {
-                fprintf(tempFile, "%s", buffer);
+                int newTaskNum = currentTask - 1;
+                char newBuffer[1024];
+                snprintf(newBuffer, sizeof newBuffer, "%d.%s", newTaskNum, dotPos + 1);
+                fprintf(tempFile, "%s", newBuffer);
             }
         }
         else
         {
-
-            char doneBuffer[1024];
-            snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", buffer + 3);
-            fprintf(tempFileDone, "%s", doneBuffer);
+            fprintf(tempFile, "%s", buffer);
         }
+        
         currentTask++;
     }
-
-    rewind(tempFileDone); // Move the file pointer back to the beginning of tempFileDone
-    while(fgets(buffer, sizeof buffer, tempFileDone) != NULL)
-    {
-        fprintf(tempFile, "%s", buffer);
-    }
-
-    fclose(fp);
-    fclose(tempFile);
-    fclose(tempFileDone);
     remove(s);
-    remove("tempDone.txt");
     rename("temp.txt", s);
+    fclose(tempFile);
+    fclose(fp);
+
+    return markedTask;
 }
