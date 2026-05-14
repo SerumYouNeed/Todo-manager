@@ -112,12 +112,13 @@ void printLists(void)
 }
 
 
-char* switchList(void)
+void switchList(char *list, size_t size)
 {
     printLists();
-    printf("Enter the number or name of the list to switch to: \n");
-    char list[101];
-    fgets(list, sizeof list, stdin);
+
+    printf("Enter the number or name of the list to switch to:\n");
+
+    fgets(list, size, stdin);
+
     list[strcspn(list, "\n")] = '\0';
-    return list;
 }

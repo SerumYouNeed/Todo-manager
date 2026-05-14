@@ -2,7 +2,8 @@
 #define MENU_H
 
 void printMenu(void);
-int selectTask(int a);
+void printListsMenu(void);
+int selectTask();
 
 
 #endif // MENU_H   

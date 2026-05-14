@@ -3,7 +3,7 @@
 
 void addList(void);
 void deleteList(void);
-void switchList(void);
+void switchList(char *list, size_t size);
 void printLists(void);
 
 #endif // LISTS_H   

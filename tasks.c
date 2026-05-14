@@ -86,38 +86,7 @@ void printTasks(char *s)
     fclose(fp);
 }
 
-void deleteTask(char *s)
-{
-    printf("Enter the number of the task to delete: \n");
-    int taskNum;
-    scanf(" %d", &taskNum);
-
-    updateTasksNumbers(s, taskNum);
-}
-
-void markTaskDone(char *s)
-{
-    FILE *fp;
-    fp = fopen(s, "a");
-    if (fp == NULL)
-    {
-        printf("Error opening file.\n");
-        fclose(fp);
-        return;
-    }
-    printf("Enter the number of the task to mark as done: \n");
-    int taskNum;
-    scanf(" %d", &taskNum);
-
-    char doneBuffer[1024] = updateTasksNumbers(s, taskNum);
-    snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", doneBuffer + 3);
-    fprintf(fp, "%s", doneBuffer);
-    
-    fclose(fp);
-}
-
-char* updateTasksNumbers(char* s, int taskNum)
-
+void updateTasksNumbers(char* s, int taskNum)
 {
     FILE *tempFile;
     tempFile = fopen("temp.txt", "w");
@@ -125,7 +94,7 @@ char* updateTasksNumbers(char* s, int taskNum)
     {
         printf("Error opening temporary file.\n");
         fclose(tempFile);
-        return; 
+        return NULL; 
     }
 
     FILE *fp;
@@ -134,7 +103,7 @@ char* updateTasksNumbers(char* s, int taskNum)
     {
         printf("Error opening file.\n");
         fclose(tempFile);
-        return;
+        return NULL;
     }
     
     char buffer[1024];
@@ -178,6 +147,36 @@ char* updateTasksNumbers(char* s, int taskNum)
     rename("temp.txt", s);
     fclose(tempFile);
     fclose(fp);
+}
 
-    return markedTask;
+void markTaskDone(char *s)
+{
+    FILE *fp;
+    fp = fopen(s, "a");
+    if (fp == NULL)
+    {
+        printf("Error opening file.\n");
+        fclose(fp);
+        return;
+    }
+    printf("Enter the number of the task to mark as done: \n");
+    int taskNum;
+    scanf(" %d", &taskNum);
+
+    char doneBuffer[1024]; 
+    updateTasksNumbers(s, taskNum);
+    snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", doneBuffer + 3);
+    fprintf(fp, "%s", doneBuffer);
+    
+    fclose(fp);
+}
+
+
+void deleteTask(char *s)
+{
+    printf("Enter the number of the task to delete: \n");
+    int taskNum;
+    scanf(" %d", &taskNum);
+
+    updateTasksNumbers(s, taskNum);
 }

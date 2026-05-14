@@ -8,5 +8,6 @@ void deleteTask(char *s);
 void clearScreen();
 char* removeFrontDigits(char* str);
 void markTaskDone(char *s);
+void updateTasksNumbers(char* s, int taskNum);
 
 #endif // TASKS_H
