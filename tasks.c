@@ -30,6 +30,22 @@ void addTask(char *s, int taskCounter)
     }
 }
 
+char* removeFrontDigits(char* str)
+{
+    while (*str && isdigit(*str))
+    {
+        str++;
+    }
+
+    if (*str == '.')
+        str++;
+
+    if (*str == ' ')
+        str++;
+
+    return str;
+}
+
 int lineCounter(char *s)
 {
     int linecount = 1;
@@ -38,7 +54,7 @@ int lineCounter(char *s)
     fp = fopen(s, "r");
     if (fp == NULL)
     {
-        return 1; // If the file doesn't exist, start with 1 task
+        return 1; // If the file doesn't exist, start with 1
     }
     while (fgets(buffer, sizeof buffer, fp) != NULL) 
     {
@@ -96,7 +112,6 @@ void markTaskDone(char *s)
     char doneBuffer[1024] = updateTasksNumbers(s, taskNum);
     snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", doneBuffer + 3);
     fprintf(fp, "%s", doneBuffer);
-
     
     fclose(fp);
 }
