@@ -100,12 +100,22 @@ void printLists(void)
         return;
     }
     char buffer[1024];
-    printf("********************\n");
+    printf("\n********************\n");
     printf("*    Your lists    *\n");
     printf("********************\n");
     while (fgets(buffer, sizeof buffer, fp) != NULL) 
     {
-        printf("%s", buffer);
+        int position = 0;
+        while (buffer[position] != '\0') 
+        {
+            if (buffer[position] == '.' && buffer[position + 1] == 't' && buffer[position + 2] == 'x' && buffer[position + 3] == 't') 
+            {
+                buffer[position] = '\0';
+                break;
+            }
+            position++;
+        }
+        printf("%s\n", buffer);
     }
     printf("\n\n");
     fclose(fp);
