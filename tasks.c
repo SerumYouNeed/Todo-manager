@@ -86,7 +86,7 @@ void printTasks(char *s)
     fclose(fp);
 }
 
-void updateTasksNumbers(char* s, int taskNum)
+void updateTasksNumbers(char* file, int taskNum, char* markedTask, size_t markedTaskSize)
 {
     FILE *tempFile;
     tempFile = fopen("temp.txt", "w");
@@ -94,20 +94,19 @@ void updateTasksNumbers(char* s, int taskNum)
     {
         printf("Error opening temporary file.\n");
         fclose(tempFile);
-        return NULL; 
+        return; 
     }
 
     FILE *fp;
-    fp = fopen(s, "r");
+    fp = fopen(file, "r");
     if (fp == NULL)
     {
         printf("Error opening file.\n");
         fclose(tempFile);
-        return NULL;
+        return;
     }
     
     char buffer[1024];
-    char markedTask[1024];
     int currentTask = 1;
     while (fgets(buffer, sizeof buffer, fp) != NULL)
     {
@@ -115,14 +114,14 @@ void updateTasksNumbers(char* s, int taskNum)
         {
             // This line is marked as done, write it to tempFile without changing the task number
             fprintf(tempFile, "%s", buffer);  
-            continue; // Skip the rest of the loop and move to the next line  
+            continue; 
         }
         if (currentTask == taskNum)
         {
-            // Skip the task that is being deleted
-            currentTask++;
-            snprintf(markedTask, sizeof markedTask, "%s", buffer);
-            continue; // Skip the rest of the loop and move to the next line
+            currentTask++;  
+            strncpy(markedTask, removeFrontDigits(buffer), markedTaskSize);
+            // snprintf(markedTask, sizeof markedTask, "%s", buffer);
+            continue; 
         }
         if (currentTask > taskNum)
         {
@@ -143,8 +142,8 @@ void updateTasksNumbers(char* s, int taskNum)
         
         currentTask++;
     }
-    remove(s);
-    rename("temp.txt", s);
+    remove(file);
+    rename("temp.txt", file);
     fclose(tempFile);
     fclose(fp);
 }
@@ -163,9 +162,10 @@ void markTaskDone(char *s)
     int taskNum;
     scanf(" %d", &taskNum);
 
-    char doneBuffer[1024]; 
-    updateTasksNumbers(s, taskNum);
-    snprintf(doneBuffer, sizeof doneBuffer, "DONE: %s", doneBuffer + 3);
+    char doneBuffer[1018];
+    char done[1024];
+    updateTasksNumbers(s, taskNum, doneBuffer, sizeof doneBuffer);
+    snprintf(done, sizeof done, "DONE: %s", doneBuffer);
     fprintf(fp, "%s", doneBuffer);
     
     fclose(fp);
@@ -178,5 +178,5 @@ void deleteTask(char *s)
     int taskNum;
     scanf(" %d", &taskNum);
 
-    updateTasksNumbers(s, taskNum);
+    updateTasksNumbers(s, taskNum, NULL, 0);
 }
