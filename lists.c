@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "menu.h"
 #include "tasks.h"
 
@@ -47,7 +48,7 @@ void deleteList(void)
 {
 char listName[101];
 
-    printf("Enter the name of the list to delete:\n");
+    printf("Enter the name of the list or its number to delete:\n");
     fgets(listName, sizeof listName, stdin);
     listName[strcspn(listName, "\n")] = '\0';
 
@@ -68,19 +69,37 @@ char listName[101];
 
     char buffer[101];
     int newLineNum = 1;
+    long lineNumberfromBuffer;
+    char lineNumberAsString[10];
+    char *stripedListName;
 
     while (fgets(buffer, sizeof buffer, listsFile) != NULL)
-    {
+    {   
         buffer[strcspn(buffer, "\n")] = '\0';
 
-        char *stripedListName = removeFrontDigits(buffer);
+        lineNumberfromBuffer = strtol(buffer, &stripedListName, 10);
+        snprintf(lineNumberAsString, sizeof lineNumberAsString, "%ld", lineNumberfromBuffer);
 
-        if (strcmp(stripedListName, listName) == 0)
+        if (strcmp(stripedListName, listName) == 0 || listName == lineNumberAsString)
         {
-            continue;
+            printf("Are you sure you want to delete the list '%s'? (y/n): ", stripedListName);
+            char confirmation;
+            scanf(" %c", &confirmation);
+            if (confirmation == 'y' || confirmation == 'Y')
+            {   
+                continue;
+            }
+            else
+            {
+                fprintf(tempListsFile, "%d. %s\n", newLineNum, stripedListName);
+                newLineNum++;
+                continue;
+            }
+
         }
 
-        fprintf(tempListsFile, "%d. %s\n", newLineNum++, stripedListName);
+        fprintf(tempListsFile, "%d. %s\n", newLineNum, stripedListName);
+        newLineNum++;
     }
 
     fclose(listsFile);
