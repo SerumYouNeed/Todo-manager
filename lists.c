@@ -75,8 +75,7 @@ void deleteList(void)
     char *stripedListName;
 
     while (fgets(buffer, sizeof buffer, listsFile) != NULL)
-    {
-        // printf("RAW BUFFER: [%s]\n", buffer);   
+    {   
         buffer[strcspn(buffer, "\n")] = '\0';
 
         lineNumberfromBuffer = strtol(buffer, &stripedListName, 10);
@@ -95,14 +94,14 @@ void deleteList(void)
             }
             else
             {
-                fprintf(tempListsFile, "%d. %s\n", newLineNum, stripedListName);
+                fprintf(tempListsFile, "%d. %s\n", newLineNum, strcat(stripedListName, ".txt"));
                 newLineNum++;
                 continue;
             }
 
         }
 
-        fprintf(tempListsFile, "%d. %s\n", newLineNum, stripedListName);
+        fprintf(tempListsFile, "%d. %s\n", newLineNum, strcat(stripedListName, ".txt"));
         newLineNum++;
     }
 
