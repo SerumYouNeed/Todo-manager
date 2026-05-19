@@ -33,9 +33,7 @@ void addTask(char *s, int taskCounter)
 char* formatListNameFromString(char* str)
 {
     while (*str && isdigit(*str))
-    {
         str++;
-    }
 
     if (*str == '.')
         str++;
@@ -43,7 +41,14 @@ char* formatListNameFromString(char* str)
     if (*str == ' ')
         str++;
 
-    return str;
+    char *start = str;
+
+    char *dot = strstr(start, ".txt");
+
+    if (dot)
+        *dot = '\0';
+
+    return start;
 }
 
 int lineCounter(char *s)

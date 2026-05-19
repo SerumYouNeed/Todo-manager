@@ -75,12 +75,14 @@ void deleteList(void)
     char *stripedListName;
 
     while (fgets(buffer, sizeof buffer, listsFile) != NULL)
-    {   
+    {
+        // printf("RAW BUFFER: [%s]\n", buffer);   
         buffer[strcspn(buffer, "\n")] = '\0';
 
         lineNumberfromBuffer = strtol(buffer, &stripedListName, 10);
         snprintf(lineNumberAsString, sizeof lineNumberAsString, "%ld", lineNumberfromBuffer);
         stripedListName = formatListNameFromString(stripedListName);
+ 
         
         if (strcmp(stripedListName, listName) == 0 || strcmp(listName, lineNumberAsString) == 0)
         {
@@ -126,17 +128,11 @@ void printLists(void)
     printf("********************\n");
     while (fgets(buffer, sizeof buffer, fp) != NULL) 
     {
-        int position = 0;
-        while (buffer[position] != '\0') 
-        {
-            if (buffer[position] == '.' && buffer[position + 1] == 't' && buffer[position + 2] == 'x' && buffer[position + 3] == 't') 
-            {
-                buffer[position] = '\0';
-                break;
-            }
-            position++;
-        }
-        printf("%s\n", buffer);
+        char* listName;
+        long position = strtol(buffer, &listName, 10);
+        listName = formatListNameFromString(listName);
+        printf("%ld. %s\n", position, listName);
+        // printf("%s", buffer);
     }
     printf("\n\n");
     fclose(fp);

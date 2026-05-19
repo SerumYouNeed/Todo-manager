@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void printMenu(void)
 {
@@ -30,9 +31,9 @@ int selectTask(void)
 {
     printf("********************\n");
     printf("Select a task:  ");
-    int a;
+    long a;
     char buffer[100];
     fgets(buffer, sizeof buffer, stdin);
-    sscanf(buffer, " %d", &a);
+    a = strtol(buffer, NULL, 10);
     return a;
 }
