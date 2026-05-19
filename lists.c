@@ -80,14 +80,14 @@ void deleteList(void)
 
         lineNumberfromBuffer = strtol(buffer, &stripedListName, 10);
         snprintf(lineNumberAsString, sizeof lineNumberAsString, "%ld", lineNumberfromBuffer);
-        // printf("lineNumberfromBuffer: %s\n", lineNumberAsString);
+        stripedListName = formatListNameFromString(stripedListName);
         
         if (strcmp(stripedListName, listName) == 0 || strcmp(listName, lineNumberAsString) == 0)
         {
             printf("Are you sure you want to delete the list '%s'? (y/n): ", stripedListName);
-            char confirmation;
-            scanf(" %c", &confirmation);
-            if (confirmation == 'y' || confirmation == 'Y')
+            char confirmation[5];
+            fgets(confirmation, sizeof confirmation, stdin);
+            if (confirmation[0] == 'y' || confirmation[0] == 'Y')
             {   
                 continue;
             }

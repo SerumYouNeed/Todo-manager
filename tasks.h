@@ -6,7 +6,7 @@ int lineCounter(char *s);
 void printTasks(char *s);
 void deleteTask(char *s);
 void clearScreen();
-char* removeFrontDigits(char* str);
+char* formatListNameFromString(char* str);
 void markTaskDone(char *s);
 void updateTasksNumbers(char* s, int taskNum);
 

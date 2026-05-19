@@ -30,7 +30,7 @@ void addTask(char *s, int taskCounter)
     }
 }
 
-char* removeFrontDigits(char* str)
+char* formatListNameFromString(char* str)
 {
     while (*str && isdigit(*str))
     {
@@ -119,7 +119,7 @@ void updateTasksNumbers(char* file, int taskNum, char* markedTask, size_t marked
         if (currentTask == taskNum)
         {
             currentTask++;  
-            strncpy(markedTask, removeFrontDigits(buffer), markedTaskSize);
+            strncpy(markedTask, formatListNameFromString(buffer), markedTaskSize);
             // snprintf(markedTask, sizeof markedTask, "%s", buffer);
             continue; 
         }
@@ -160,7 +160,9 @@ void markTaskDone(char *s)
     }
     printf("Enter the number of the task to mark as done: \n");
     int taskNum;
-    scanf(" %d", &taskNum);
+    char buffer[100];
+    fgets(buffer, sizeof buffer, stdin);
+    sscanf(buffer, " %d", &taskNum);
 
     char doneBuffer[1018];
     char done[1024];
