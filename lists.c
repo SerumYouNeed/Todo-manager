@@ -8,7 +8,8 @@ void addList(void)
 {
     printf("Enter the name of the new list: \n");
     char listName[101];
-    scanf(" %100s", listName);
+    fgets(listName, sizeof listName, stdin);
+    listName[strcspn(listName, "\n")] = '\0';
     strcat(listName, ".txt");
 
     FILE *fp;
@@ -46,9 +47,9 @@ void addList(void)
 
 void deleteList(void)
 {
-char listName[101];
+    char listName[101];
 
-    printf("Enter the name of the list or its number to delete:\n");
+    printf("Enter the name of the list or its number to delete: \n");
     fgets(listName, sizeof listName, stdin);
     listName[strcspn(listName, "\n")] = '\0';
 
@@ -79,8 +80,9 @@ char listName[101];
 
         lineNumberfromBuffer = strtol(buffer, &stripedListName, 10);
         snprintf(lineNumberAsString, sizeof lineNumberAsString, "%ld", lineNumberfromBuffer);
-
-        if (strcmp(stripedListName, listName) == 0 || listName == lineNumberAsString)
+        // printf("lineNumberfromBuffer: %s\n", lineNumberAsString);
+        
+        if (strcmp(stripedListName, listName) == 0 || strcmp(listName, lineNumberAsString) == 0)
         {
             printf("Are you sure you want to delete the list '%s'? (y/n): ", stripedListName);
             char confirmation;

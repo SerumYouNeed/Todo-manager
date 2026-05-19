@@ -31,6 +31,8 @@ int selectTask(void)
     printf("********************\n");
     printf("Select a task:  ");
     int a;
-    scanf(" %d", &a);
+    char buffer[100];
+    fgets(buffer, sizeof buffer, stdin);
+    sscanf(buffer, " %d", &a);
     return a;
 }

@@ -28,7 +28,7 @@ int main(void)
                         break;
                 case 2: 
                         deleteList();
-                        clearScreen();
+                        // clearScreen();
                         break;
                 case 3: 
                         switchList(listName, sizeof(listName));
