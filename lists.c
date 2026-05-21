@@ -4,6 +4,33 @@
 #include "menu.h"
 #include "tasks.h"
 
+void checkIfListExists(const char *listName)
+{
+    FILE *fp;
+    fp = fopen("lists.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error opening file.\n");
+        return;
+    }
+    char buffer[101];
+    int exists = 0;
+    while (fgets(buffer, sizeof buffer, fp) != NULL) 
+    {
+        if (strcmp(listName, buffer) == 0)
+        {
+            exists = 1;
+            break;
+        }
+    }
+    fclose(fp);
+    if (!exists)
+    {
+        printf("List does not exist.\n");
+        return;
+    }
+}
+
 void addList(void)
 {
     printf("Enter the name of the new list: \n");
