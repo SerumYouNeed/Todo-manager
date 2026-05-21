@@ -4,8 +4,10 @@
 #include "menu.h"
 #include "tasks.h"
 
-void checkIfListExists(const char *listName)
+int checkIfListExists(const char *listName)
 {
+    strcat(listName, ".txt");
+    
     FILE *fp;
     fp = fopen("lists.txt", "r");
     if (fp == NULL)
@@ -15,9 +17,19 @@ void checkIfListExists(const char *listName)
     }
     char buffer[101];
     int exists = 0;
+    long lineNumberfromBuffer;
+    char lineNumberAsString[10];
+    char *stripedListName;
+    
     while (fgets(buffer, sizeof buffer, fp) != NULL) 
     {
-        if (strcmp(listName, buffer) == 0)
+        buffer[strcspn(buffer, "\n")] = '\0';
+        
+        lineNumberfromBuffer = strtol(buffer, &stripedListName, 10);
+        snprintf(lineNumberAsString, sizeof lineNumberAsString, "%ld", lineNumberfromBuffer);
+        stripedListName = formatListNameFromString(stripedListName);
+
+        if (strcmp(listName, stripedListName) == 0 || strcmp(listName, lineNumberAsString) == 0)
         {
             exists = 1;
             break;
@@ -27,8 +39,8 @@ void checkIfListExists(const char *listName)
     if (!exists)
     {
         printf("List does not exist.\n");
-        return;
     }
+    return exists;
 }
 
 void addList(void)
