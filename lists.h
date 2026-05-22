@@ -3,8 +3,8 @@
 
 void addList(void);
 void deleteList(void);
-void switchList(char *list, size_t size);
+void switchList(void);
 void printLists(void);
-int checkListExists(char *listName);
+int checkIfListExists(const char *listName);
 
 #endif // LISTS_H   

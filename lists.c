@@ -4,17 +4,23 @@
 #include "menu.h"
 #include "tasks.h"
 
+/**
+ * Check if a list exists
+ *
+ * @param listName Name of the list to check
+ * @return 1 if the list exists, 0 otherwise
+ */
 int checkIfListExists(const char *listName)
 {
-    strcat(listName, ".txt");
-    
     FILE *fp;
     fp = fopen("lists.txt", "r");
     if (fp == NULL)
     {
         printf("Error opening file.\n");
-        return;
+        return 0;
+ 
     }
+
     char buffer[101];
     int exists = 0;
     long lineNumberfromBuffer;
@@ -36,13 +42,15 @@ int checkIfListExists(const char *listName)
         }
     }
     fclose(fp);
-    if (!exists)
-    {
-        printf("List does not exist.\n");
-    }
+    
     return exists;
 }
 
+/**
+ * Add a new list
+ *
+ * Prompts the user to enter the name of the new list, creates a corresponding file for the list, and updates the lists.txt file with the new list.
+ */
 void addList(void)
 {
     printf("Enter the name of the new list: \n");
@@ -70,20 +78,23 @@ void addList(void)
 
     int listNumber = lineCounter("lists.txt");
 
-    char buffer[101];
-    while (fgets(buffer, sizeof buffer, listsFile) != NULL) 
-    {
-        if (strcmp(listName, buffer) == 0)
+    
+    if (checkIfListExists(listName))
         {
             printf("List already exists.\n");
             fclose(listsFile);
             return;
         }
-    }
+    
     fprintf(listsFile, "%d. %s\n", listNumber, listName);
     fclose(listsFile);
 }
 
+/**
+ * Delete a list
+ *
+ * Prompts the user to enter the name or number of the list to delete, confirms the deletion, and updates the lists.txt file accordingly.
+ */
 void deleteList(void)
 {
     char listName[101];
@@ -151,6 +162,11 @@ void deleteList(void)
     rename("temp_lists.txt", "lists.txt");
 }
 
+/**
+ * Print all lists
+ *
+ * Reads the lists.txt file and displays the names of all the lists to the user.
+ */
 void printLists(void)
 {
     FILE *fp;
@@ -176,14 +192,48 @@ void printLists(void)
     fclose(fp);
 }
 
-
-void switchList(char *list, size_t size)
+/**
+ * Switch to a different list
+ *
+ * Prompts the user to enter the name or number of the list to switch to, checks if the list exists, and if it does, displays the tasks in that list.
+ */
+void switchList(void)
 {
+    clearScreen();
     printLists();
 
-    printf("Enter the number or name of the list to switch to:\n");
-
-    fgets(list, size, stdin);
-
+    printf("Enter the name of the list: \n");
+    char list[101];
+    fgets(list, sizeof list, stdin);
     list[strcspn(list, "\n")] = '\0';
+
+    FILE *fp;
+    fp = fopen("lists.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error opening file.\n");
+        return;
+    }
+
+    int numOfLists = lineCounter("lists.txt");
+
+    if (!checkIfListExists(list))
+    {
+        printf("List does not exist.\n\n");
+        printListsMenu();
+    }
+    else
+    {
+        clearScreen();
+        strcat(list, ".txt");
+        printTasks(list);
+    }
+
+    close(fp);
+}
+
+int takeNumberFromLineAsString(char* line)
+{
+    long number = strtol(line, NULL, 10);
+    return (int)number;
 }
