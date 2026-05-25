@@ -6,6 +6,6 @@ void deleteList(void);
 void switchList(void);
 void printLists(void);
 int checkIfListExists(const char *listName);
-int takeNumberFromLineAsString(char* line)
+int takeNumberFromLineAsString(char* line);
 
 #endif // LISTS_H   
