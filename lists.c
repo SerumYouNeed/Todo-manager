@@ -197,15 +197,16 @@ void printLists(void)
  *
  * Prompts the user to enter the name or number of the list to switch to, checks if the list exists, and if it does, displays the tasks in that list.
  */
-void switchList(void)
+char* switchList(void)
 {
     clearScreen();
     printLists();
 
-    printf("Enter the name of the list: \n");
+    printf("Enter the name or a number of the list: \n");
     char list[101];
     fgets(list, sizeof list, stdin);
     list[strcspn(list, "\n")] = '\0';
+    int listNumber = takeNumberFromLineAsString(list);
 
     FILE *fp;
     fp = fopen("lists.txt", "r");
@@ -217,19 +218,15 @@ void switchList(void)
 
     int numOfLists = lineCounter("lists.txt");
 
-    if (!checkIfListExists(list))
+    close(fp);
+    
+    if (!checkIfListExists(list) || (numOfLists < listNumber))
     {
         printf("List does not exist.\n\n");
-        printListsMenu();
-    }
-    else
-    {
-        clearScreen();
-        strcat(list, ".txt");
-        printTasks(list);
     }
 
-    close(fp);
+    return list;
+
 }
 
 int takeNumberFromLineAsString(char* line)

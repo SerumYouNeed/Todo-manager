@@ -3,7 +3,7 @@
 
 void addList(void);
 void deleteList(void);
-void switchList(void);
+char* switchList(void);
 void printLists(void);
 int checkIfListExists(const char *listName);
 int takeNumberFromLineAsString(char* line);

@@ -13,7 +13,7 @@
 
 int main(void)
 {   
-    char listName[101] = {0};
+    char* listName;
     int exit = 0;
     
     clearScreen();
@@ -33,7 +33,7 @@ int main(void)
                         clearScreen();
                         break;
                 case 3: 
-                        switchList();
+                        listName = switchList();
                         int previousMenu = 0;
                         do
                         {
