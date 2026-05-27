@@ -13,7 +13,6 @@
 
 int main(void)
 {   
-    char* listName;
     int exit = 0;
     
     clearScreen();
@@ -33,8 +32,13 @@ int main(void)
                         clearScreen();
                         break;
                 case 3: 
-                        listName = switchList();
                         int previousMenu = 0;
+                        char listName[101];
+                        promptUserForListName(listName, sizeof(listName));
+                        if (!checkIfListExist(listName))
+                        {
+                                break;
+                        }
                         do
                         {
                                 printMenu(); 

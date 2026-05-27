@@ -198,36 +198,6 @@ int takeNumberFromLineAsString(char* line)
     return (int)number;
 }
 
-/**
- * Switch to a different list
- *
- * Prompts the user to enter the name or number of the list to switch to, checks if the list exists, and if it does, displays the tasks in that list.
- */
-int switchList(char* list)
-{
-    int listNumber = takeNumberFromLineAsString(list);
-    
-    FILE *fp;
-    fp = fopen("lists.txt", "r");
-    if (fp == NULL)
-    {
-        printf("Error opening file.\n");
-        return NULL;
-    }
-
-    int numOfLists = lineCounter("lists.txt");
-
-    fclose(fp);
-    
-    if (!checkIfListExists(list) || (numOfLists < listNumber))
-    {
-        printf("List does not exist.\n\n");
-    }
-    
-    return list;
-
-}
-
 void promptUserForListName(char* list, size_t size) 
 {
     printf("Enter the name or a number of the list: \n");
