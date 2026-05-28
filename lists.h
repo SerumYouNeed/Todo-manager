@@ -7,5 +7,6 @@ char* switchList(void);
 void printLists(void);
 int takeNumberFromLineAsString(char* line);
 void promptUserForListName(char* list, size_t size);
+int checkIfListExists(const char *listName);
 
 #endif // LISTS_H   

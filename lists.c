@@ -53,6 +53,7 @@ int checkIfListExists(const char *listName)
  */
 void addList(void)
 {
+    // refactor this function to check if the list already exists before creating the file for the list. This will prevent unnecessary file creation and ensure that the user is informed if they try to create a list that already exists.
     printf("Enter the name of the new list: \n");
     char listName[101];
     fgets(listName, sizeof listName, stdin);

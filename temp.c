@@ -7,9 +7,6 @@
 // TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions. Currently, if there is an error opening the files, the program simply prints an error message and continues execution. It would be better to handle these errors more gracefully, such as by exiting the function early or providing feedback to the user about the failure.
 // TODO: Consider adding functionality to allow users to mark tasks as not done or to edit existing tasks. This would enhance the usability of the task manager and provide more flexibility for users to manage their tasks effectively../
 // TODO: adding lists of the same name and empty string lists.
-// TODO: Complete swiching lists. Currently, the switchList function prompts the user to enter the name or number of the list to switch to and checks if the list exists, but it does not actually switch to the selected list or display its tasks. Implementing this functionality would allow users to easily navigate between different lists and manage their tasks more efficiently.
-
-
 
 int main(void)
 {   
@@ -32,10 +29,11 @@ int main(void)
                         clearScreen();
                         break;
                 case 3: 
+                        clearScreen();
                         int previousMenu = 0;
                         char listName[101];
                         promptUserForListName(listName, sizeof(listName));
-                        if (!checkIfListExist(listName))
+                        if (!checkIfListExists(listName))
                         {
                                 break;
                         }
