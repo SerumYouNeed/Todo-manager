@@ -17,12 +17,14 @@ int main(void)
     {
             printListsMenu();
             int task = selectTask();
+            char listName[101];
             
             switch (task)
             {    
                 case 1: 
-                        addList();
                         clearScreen();
+                        promptUserForListName(listName, sizeof(listName));
+                        addList(listName, sizeof(listName));
                         break;
                 case 2: 
                         deleteList();
@@ -31,7 +33,6 @@ int main(void)
                 case 3: 
                         clearScreen();
                         int previousMenu = 0;
-                        char listName[101];
                         promptUserForListName(listName, sizeof(listName));
                         if (!checkIfListExists(listName))
                         {

@@ -1,7 +1,7 @@
 #ifndef LISTS_H
 #define LISTS_H
 
-void addList(void);
+void addList(char* listName, size_t size);
 void deleteList(void);
 char* switchList(void);
 void printLists(void);

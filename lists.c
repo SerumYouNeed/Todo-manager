@@ -51,7 +51,7 @@ int checkIfListExists(const char *listName)
  *
  * Prompts the user to enter the name of the new list, creates a corresponding file for the list, and updates the lists.txt file with the new list.
  */
-void addList(void)
+void addList(char* listName, size_t size)
 {
     // refactor this function to check if the list already exists before creating the file for the list. This will prevent unnecessary file creation and ensure that the user is informed if they try to create a list that already exists.
     printf("Enter the name of the new list: \n");
