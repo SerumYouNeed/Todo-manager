@@ -1,8 +1,8 @@
 #ifndef LISTS_H
 #define LISTS_H
 
-void addList(char* listName, size_t size);
-void deleteList(void);
+int addList(char* listName, size_t size);
+int deleteList(char* listName, size_t size);
 char* switchList(void);
 void printLists(void);
 int takeNumberFromLineAsString(char* line);

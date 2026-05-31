@@ -5,5 +5,4 @@ void printMenu(void);
 void printListsMenu(void);
 int selectTask();
 
-
 #endif // MENU_H   

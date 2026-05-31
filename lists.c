@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "tasks.h"
 
+
 /**
  * Check if a list exists
  *
@@ -49,23 +50,16 @@ int checkIfListExists(const char *listName)
 /**
  * Add a new list
  *
- * Prompts the user to enter the name of the new list, creates a corresponding file for the list, and updates the lists.txt file with the new list.
+ * If the list exists return 1, if the list is created successfully return 0, if there is an error creating the file return 1.
  */
-void addList(char* listName, size_t size)
+int addList(char* listName, size_t size)
 {
-    // refactor this function to check if the list already exists before creating the file for the list. This will prevent unnecessary file creation and ensure that the user is informed if they try to create a list that already exists.
-    printf("Enter the name of the new list: \n");
-    char listName[101];
-    fgets(listName, sizeof listName, stdin);
-    listName[strcspn(listName, "\n")] = '\0';
-    strcat(listName, ".txt");
-
     FILE *fp;
     fp = fopen(listName, "w");
     if (fp == NULL)
     {
         printf("Error creating file.\n");
-        return;
+        return 1;
     }
     fclose(fp);
 
@@ -74,7 +68,7 @@ void addList(char* listName, size_t size)
     if (listsFile == NULL)
     {
         printf("Error opening file.\n");
-        return; 
+        return 1; 
     }
 
     int listNumber = lineCounter("lists.txt");
@@ -84,31 +78,26 @@ void addList(char* listName, size_t size)
         {
             printf("List already exists.\n");
             fclose(listsFile);
-            return;
+            return 1;
         }
     
     fprintf(listsFile, "%d. %s\n", listNumber, listName);
     fclose(listsFile);
+    return 0;
 }
 
 /**
  * Delete a list
  *
- * Prompts the user to enter the name or number of the list to delete, confirms the deletion, and updates the lists.txt file accordingly.
+ * If the list does not exist return 1, if the list is deleted successfully return 0, if there is an error opening the file return 1.
  */
-void deleteList(void)
+int deleteList(char* listName, size_t size)
 {
-    char listName[101];
-
-    printf("Enter the name of the list or its number to delete: \n");
-    fgets(listName, sizeof listName, stdin);
-    listName[strcspn(listName, "\n")] = '\0';
-
     FILE *listsFile = fopen("lists.txt", "r");
     if (listsFile == NULL)
     {
         printf("Error opening file.\n");
-        return;
+        return 1;
     }
 
     FILE *tempListsFile = fopen("temp_lists.txt", "w");
@@ -116,7 +105,7 @@ void deleteList(void)
     {
         printf("Error opening file.\n");
         fclose(listsFile);
-        return;
+        return 1;
     }
 
     char buffer[101];
@@ -161,6 +150,7 @@ void deleteList(void)
 
     remove("lists.txt");
     rename("temp_lists.txt", "lists.txt");
+    return 0;
 }
 
 /**
@@ -205,5 +195,6 @@ void promptUserForListName(char* list, size_t size)
     if (fgets(list, size, stdin) != NULL) 
     {
         list[strcspn(list, "\n")] = '\0';
+        strncat(list, ".txt", size - strlen(list) - 1);
     }
 }
