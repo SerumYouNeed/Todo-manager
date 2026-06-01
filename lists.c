@@ -52,7 +52,7 @@ int checkIfListExists(const char *listName)
  *
  * If the list exists return 1, if the list is created successfully return 0, if there is an error creating the file return 1.
  */
-int addList(char* listName, size_t size)
+int addList(char* listName)
 {
     FILE *fp;
     fp = fopen(listName, "w");
@@ -91,13 +91,13 @@ int addList(char* listName, size_t size)
  *
  * If the list does not exist return 1, if the list is deleted successfully return 0, if there is an error opening the file return 1.
  */
-int deleteList(char* listName, size_t size)
+void deleteList(char* listName)
 {
     FILE *listsFile = fopen("lists.txt", "r");
     if (listsFile == NULL)
     {
         printf("Error opening file.\n");
-        return 1;
+        return;
     }
 
     FILE *tempListsFile = fopen("temp_lists.txt", "w");
@@ -105,7 +105,7 @@ int deleteList(char* listName, size_t size)
     {
         printf("Error opening file.\n");
         fclose(listsFile);
-        return 1;
+        return;
     }
 
     char buffer[101];
@@ -121,6 +121,9 @@ int deleteList(char* listName, size_t size)
         lineNumberfromBuffer = strtol(buffer, &stripedListName, 10);
         snprintf(lineNumberAsString, sizeof lineNumberAsString, "%ld", lineNumberfromBuffer);
         stripedListName = formatListNameFromString(stripedListName);
+                        printf("Deleting list '%s'...\n", stripedListName);
+                        printf("Saved list '%s'...\n", listName);
+
  
         
         if (strcmp(stripedListName, listName) == 0 || strcmp(listName, lineNumberAsString) == 0)
@@ -150,7 +153,7 @@ int deleteList(char* listName, size_t size)
 
     remove("lists.txt");
     rename("temp_lists.txt", "lists.txt");
-    return 0;
+    return;
 }
 
 /**
@@ -191,7 +194,7 @@ int takeNumberFromLineAsString(char* line)
 
 void promptUserForListName(char* list, size_t size) 
 {
-    printf("Enter the name or a number of the list: \n");
+    printf("Enter the name of the list: \n");
     if (fgets(list, size, stdin) != NULL) 
     {
         list[strcspn(list, "\n")] = '\0';

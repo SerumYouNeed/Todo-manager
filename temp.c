@@ -6,6 +6,7 @@
 
 // TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions. Currently, if there is an error opening the files, the program simply prints an error message and continues execution. It would be better to handle these errors more gracefully, such as by exiting the function early or providing feedback to the user about the failure.
 // TODO: Consider adding functionality to allow users to mark tasks as not done or to edit existing tasks. This would enhance the usability of the task manager and provide more flexibility for users to manage their tasks effectively../
+// delete does not work
 
 int main(void)
 {   
@@ -24,12 +25,20 @@ int main(void)
         case 1: 
                 clearScreen();
                 promptUserForListName(listName, sizeof(listName));
-                addList(listName, sizeof(listName));
+                addList(listName);
                 break;
         case 2: 
                 clearScreen();
                 promptUserForListName(listName, sizeof(listName));
-                deleteList(listName, sizeof(listName));
+                deleteList(listName);
+                // if (succes == 0)
+                // {
+                //     printf("List deleted successfully.\n");
+                // }
+                // else
+                // {
+                //     printf("Error deleting list.\n");
+                // }
                 break;
         case 3: 
                 int previousMenu = 0;
@@ -63,13 +72,14 @@ int main(void)
                         }
                 } while (!previousMenu);
                 break;
-                case 4:         
-                        printLists();
-                        break;
-                case 5: 
-                        exit = 1;
-                        break;
-                default: printf("Invalid option.\n");
+        case 4:     
+                clearScreen();    
+                printLists();
+                break;
+        case 5: 
+                exit = 1;
+                break;
+        default: printf("Invalid option.\n");
         }
      
     } while (!exit);
