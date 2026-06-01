@@ -1,3 +1,0 @@
-1. aaa.txt
-2. bbb.txt
-3. ccc.txt
