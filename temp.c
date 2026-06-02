@@ -7,11 +7,14 @@
 
 // TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions. Currently, if there is an error opening the files, the program simply prints an error message and continues execution. It would be better to handle these errors more gracefully, such as by exiting the function early or providing feedback to the user about the failure.
 // TODO: Consider adding functionality to allow users to mark tasks as not done or to edit existing tasks. This would enhance the usability of the task manager and provide more flexibility for users to manage their tasks effectively../
+// delete task
 
 int main(void)
 {   
     // listName format: "listName.txt"
     char listName[101];
+    // todo format: "new todo" starts with letter, no longer than 100 characters
+    char todo[101];
     int exit = 0;
     int task;
     clearScreen();
@@ -65,8 +68,9 @@ int main(void)
                         task = selectTask();
                         switch (task)
                         {
-                                case 1: int lineNum = lineCounter(listName);
-                                        addTask(listName, lineNum);
+                                case 1:
+                                        promptUserForTodo(todo, sizeof todo);
+                                        addTask(listName, todo);
                                         clearScreen();
                                         break;
                                 case 2: deleteTask(listName);
@@ -75,9 +79,12 @@ int main(void)
                                 case 3: markTaskDone(listName);
                                         clearScreen();
                                         break;
-                                case 4: printTasks(listName);
+                                case 4: 
+                                        clearScreen();
+                                        printTasks(listName);
                                         break;
-                                case 5: previousMenu = 1;
+                                case 5: 
+                                        previousMenu = 1;
                                         break;
                                 default: printf("Invalid option.\n");
                         }

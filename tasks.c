@@ -3,49 +3,20 @@
 #include <unistd.h>
 #include <ctype.h>
 
-// \033 or \x1b as escape ISO standard
-// [H - home, [J - clear
-void clearScreen()
-{
-   const char *CLEAR_SCREEN_ANSI = "\x1b[H\x1b[J";
-   write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 7);
-}
-
-void addTask(char *s, int taskCounter)
+void addTask(char *list, char* todo)
 {
     FILE *fp;
-    fp = fopen(s, "a+");
-    if (fp)
-    {
-        printf("Enter new task: \n");
-        char task[1024];
-        getchar(); // Consume the newline character left by scanf
-        fgets(task, 1022, stdin);
-        fprintf(fp, "%d. %s", taskCounter, task);
-        fclose(fp);
-    }
-    else
-    {
-        printf("Error opening file.\n");
-    }
-}
-
-int lineCounter(char *s)
-{
-    int linecount = 1;
-    char buffer[1024];
-    FILE *fp;
-    fp = fopen(s, "r");
+    fp = fopen(list, "a+");
     if (fp == NULL)
     {
-        return 1; // If the file doesn't exist, start with 1
+        printf("Error opening file.\n");
+        fclose(fp);
     }
-    while (fgets(buffer, sizeof buffer, fp) != NULL) 
-    {
-        linecount++;
-    }
-    fclose(fp);
-    return linecount;
+
+    int listNumber = lineCounter(list);
+
+    fprintf(list, "%d. %s\n", listNumber, todo);
+    fclose(list);
 }
 
 void printTasks(char *s)
@@ -58,6 +29,7 @@ void printTasks(char *s)
         printf("Error opening file.\n");
         return;
     }
+    
     char buffer[1024];
     printf("********************\n");
     printf("%s\n", s);

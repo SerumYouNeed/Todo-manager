@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <ctype.h>
+#include <unistd.h>
 
 char* stripFrontCharactersFromListName(char* line)
 {
@@ -58,4 +59,40 @@ void promptUserForListName(char *list, size_t size)
         list[strcspn(list, "\n")] = '\0';
         strncat(list, ".txt", size - strlen(list) - 1);
     }
+}
+
+void promptUserForTodo(char *todo, size_t size)
+{
+    printf("Enter the todo:\n");
+
+    if (fgets(todo, size, stdin) != NULL)
+    {
+        todo[strcspn(todo, "\n")] = '\0';
+    }
+}
+
+int lineCounter(char *s)
+{
+    int linecount = 1;
+    char buffer[1024];
+    FILE *fp;
+    fp = fopen(s, "r");
+    if (fp == NULL)
+    {
+        return 1; // If the file doesn't exist, start with 1
+    }
+    while (fgets(buffer, sizeof buffer, fp) != NULL) 
+    {
+        linecount++;
+    }
+    fclose(fp);
+    return linecount;
+}
+
+// \033 or \x1b as escape ISO standard
+// [H - home, [J - clear
+void clearScreen()
+{
+   const char *CLEAR_SCREEN_ANSI = "\x1b[H\x1b[J";
+   write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 7);
 }
