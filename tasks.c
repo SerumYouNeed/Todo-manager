@@ -156,13 +156,3 @@ void markTaskDone(char *s)
     
     fclose(fp);
 }
-
-
-void deleteTask(char *s)
-{
-    printf("Enter the number of the task to delete: \n");
-    int taskNum;
-    scanf(" %d", &taskNum);
-
-    updateTasksNumbers(s, taskNum, NULL, 0);
-}
