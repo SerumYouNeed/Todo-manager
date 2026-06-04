@@ -5,8 +5,8 @@
 #include "lists.h"
 #include "helpers.h"
 
-// TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions. Currently, if there is an error opening the files, the program simply prints an error message and continues execution. It would be better to handle these errors more gracefully, such as by exiting the function early or providing feedback to the user about the failure.
-// TODO: Consider adding functionality to allow users to mark tasks as not done or to edit existing tasks. This would enhance the usability of the task manager and provide more flexibility for users to manage their tasks effectively../
+// TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions. 
+// TODO: Consider adding functionality to allow users to mark tasks as not done or to edit existing tasks.
 // delete task
 
 int main(void)
