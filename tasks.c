@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include "helpers.h"
 
 void addTask(char *list, char* todo)
 {
@@ -15,8 +16,8 @@ void addTask(char *list, char* todo)
 
     int listNumber = lineCounter(list);
 
-    fprintf(list, "%d. %s\n", listNumber, todo);
-    fclose(list);
+    fprintf(fp, "%d. %s\n", listNumber, todo);
+    fclose(fp);
 }
 
 void printTasks(char *s)

@@ -73,7 +73,7 @@ int main(void)
                                         addTask(listName, todo);
                                         clearScreen();
                                         break;
-                                case 2: deleteTask(listName);
+                                case 2: //deleteTask(listName);
                                         clearScreen();
                                         break;
                                 case 3: markTaskDone(listName);
