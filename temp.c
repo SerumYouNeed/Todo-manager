@@ -5,8 +5,7 @@
 #include "lists.h"
 #include "helpers.h"
 
-// TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions. 
-// TODO: Consider adding functionality to allow users to mark tasks as not done or to edit existing tasks.
+// TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions.
 // delete task
 
 int main(void)
