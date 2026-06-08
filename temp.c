@@ -5,7 +5,6 @@
 #include "lists.h"
 #include "helpers.h"
 
-// TODO: Implement error handling for file operations in the markTaskDone and deleteTask functions.
 // delete task
 
 int main(void)
@@ -44,14 +43,6 @@ int main(void)
                     break;
                 }
                 deleteList(listName);
-                // if (succes == 0)
-                // {
-                //     printf("List deleted successfully.\n");
-                // }
-                // else
-                // {
-                //     printf("Error deleting list.\n");
-                // }
                 break;
         case 3: 
                 int previousMenu = 0;
