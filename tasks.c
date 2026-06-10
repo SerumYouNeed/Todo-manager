@@ -77,7 +77,6 @@ void updateTasksNumbers(char* file, int taskNum, char* markedTask, size_t marked
         {
             currentTask++;  
             strncpy(markedTask, formatListNameFromString(buffer), markedTaskSize);
-            // snprintf(markedTask, sizeof markedTask, "%s", buffer);
             continue; 
         }
         if (currentTask > taskNum)
